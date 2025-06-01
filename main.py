@@ -1,4 +1,5 @@
 import math
+import time   
 
 # Instance class for creating an instance of particular sample/row from the dataset to be processed
 class Instance:
@@ -96,31 +97,176 @@ def nearest_neighbor_accuracy(dataset, current_feature_indices):
             if distance < min_distance:
                 min_distance = distance 
                 nearest_neighbor_class = training_instance.class_label 
+
         if nearest_neighbor_class == test_instance.class_label: # we check that the label we got from our algorithm matches actual one and if it does we increment correct predictions
             num_correct_predictions += 1 
 
     accuracy = (num_correct_predictions / len(dataset)) * 100 # calculate the accuracy and return it
     return accuracy
 
+# implemented forward selection that starts with no feature, adds one feature in each step that improves accuracy most and continues until all features are added or no improvement is seen.
+def forward_selection(dataset):
+
+    num_total_features = len(dataset[0].features) 
+    
+    current_features = set() 
+    best_overall_features = set() 
+    best_overall_accuracy = -1.0 
+
+    print("\nBeginning Forward Selection Search.\n")
+
+    for i in range(num_total_features):
+        print(f"  On level {i + 1} of the search tree, considering adding a feature to {sorted([f + 1 for f in current_features])}...")
+
+        feature_to_add_this_level = -1
+        best_accuracy_this_level = -1.0
+        
+        for candidate_feature_idx in range(num_total_features):
+            if candidate_feature_idx not in current_features:
+                temp_features = current_features.union({candidate_feature_idx})
+                
+                accuracy = nearest_neighbor_accuracy(dataset, temp_features)
+
+                print_temp_features = sorted([f + 1 for f in temp_features])
+                print(f"        Using feature(s) {{{', '.join(map(str, print_temp_features))}}} accuracy is {accuracy:.2f}%")
+
+                if accuracy > best_accuracy_this_level:
+                    best_accuracy_this_level = accuracy
+                    feature_to_add_this_level = candidate_feature_idx
+
+        if feature_to_add_this_level == -1:
+            print("Error: No feature could be added. Exiting forward selection prematurely.")
+            break        
+
+        current_features.add(feature_to_add_this_level)
+        print_current_features = sorted([f + 1 for f in current_features])
+
+        print(f"Feature set {set(print_current_features)} was best, accuracy {best_accuracy_this_level:.2f}%\n")
+
+        if best_accuracy_this_level > best_overall_accuracy:
+            best_overall_accuracy = best_accuracy_this_level
+            best_overall_features = current_features.copy()
+        else:
+            print(f"(Warning, Accuracy has decreased! Continuing search in case of local maxima)")
+            print(f"(Current best feature subset: {set(sorted([f + 1 for f in best_overall_features]))}, accuracy: {best_overall_accuracy:.2f}%)\n")
+
+    print(f"Finished search!! The best feature subset is {set(sorted([f + 1 for f in best_overall_features]))}, which has an accuracy of {best_overall_accuracy:.2f}%")
+    return best_overall_features, best_overall_accuracy
+
+# implemented backward selection
+def backward_elimination(dataset):
+    num_total_features = len(dataset[0].features)
+    
+    current_features = set(range(num_total_features))
+    
+    initial_accuracy = nearest_neighbor_accuracy(dataset, current_features)
+    
+    best_overall_features = current_features.copy()
+    best_overall_accuracy = initial_accuracy 
+    
+    plot_data = []
+    plot_data.append((frozenset(current_features), initial_accuracy)) 
+
+    print(f"Running nearest neighbor with all {num_total_features} features, using \"leaving-one-out\" evaluation, I get an accuracy of {initial_accuracy:.2f}%")
+    
+    print("\nBeginning search.\n")
+
+    for i in range(num_total_features - 1):
+        if len(current_features) <= 1:
+            break
+
+        print(f"On level {i + 1} of the search tree, considering removing feature from {set(sorted([f + 1 for f in current_features]))}.")
+
+        feature_to_remove_this_level = -1
+        best_accuracy_this_level = -1.0 
+
+        for candidate_feature_idx in current_features:
+            temp_features = current_features.difference({candidate_feature_idx})
+
+            if not temp_features:
+                accuracy = 0.0
+            else:
+                accuracy = nearest_neighbor_accuracy(dataset, temp_features)
+            
+            print_temp_features = sorted([f + 1 for f in temp_features])
+            print(f"        Using feature(s) {{{', '.join(map(str, print_temp_features))}}} accuracy is {accuracy:.2f}%")
+
+            if accuracy > best_accuracy_this_level:
+                best_accuracy_this_level = accuracy
+                feature_to_remove_this_level = candidate_feature_idx
+        
+        if feature_to_remove_this_level == -1:
+            print("Error: No feature could be removed. Exiting backward elimination prematurely.")
+            break
+            
+        current_features.remove(feature_to_remove_this_level)
+        print_current_features = sorted([f + 1 for f in current_features])
+
+        print(f"Feature set {set(print_current_features)} was best, accuracy {best_accuracy_this_level:.2f}%\n")
+        
+        plot_data.append((frozenset(current_features), best_accuracy_this_level))
+
+        if best_accuracy_this_level > best_overall_accuracy:
+            best_overall_accuracy = best_accuracy_this_level
+            best_overall_features = current_features.copy()
+        else:
+            print(f"(Warning, Accuracy has decreased! Continuing search in case of local maxima)")
+            print(f"(Current best feature subset: {set(sorted([f + 1 for f in best_overall_features]))}, accuracy: {best_overall_accuracy:.2f}%)\n")
+
+    print(f"Finished search!! The best feature subset is {set(sorted([f + 1 for f in best_overall_features]))}, which has an accuracy of {best_overall_accuracy:.2f}%")
+    return best_overall_features, best_overall_accuracy, plot_data
+
 # This is the main fucntion that is executed.
 def main() :
-    dataset_file = 'CS205_small_Data__11.txt' # path to the input dataset file
+
+    print("Welcome to Akshat Shah's Feature Selection Algorithm.\n")
+
+    # --- 2. Ask for File Name ---
+    dataset_file = input("Type in the name of the file to test : ")
+    print()
 
     my_dataset = load_dataset(dataset_file) # converting the dataset file into dataset of instances.
 
-    if not my_dataset:
-        exit()
+    while not my_dataset: # Loop until a valid, non-empty dataset is loaded
+      dataset_file = input("Type in the name of the file to test : ")
+      my_dataset = load_dataset(dataset_file)
 
     num_instances = len(my_dataset) # number of samples in dataset 
 
     num_features = len(my_dataset[0].features) if num_instances > 0 else 0 # number of features in our dataset
 
-    print(f"This dataset has {num_features} features (not including the class attribute), with {num_instances} instances.")
+    print(f"This dataset has {num_features} features (not including the class attribute), with {num_instances} instances.\n")
 
     all_feature_indices = set(range(num_features))
     
-    accuracy_all_features = nearest_neighbor_accuracy(my_dataset, all_feature_indices)
-    print(f"Running nearest neighbor with all {num_features} features, using \"leaving-one-out\" evaluation, I get an accuracy of {accuracy_all_features:.1f}%")
+    initial_all_features_accuracy = nearest_neighbor_accuracy(my_dataset, all_feature_indices)
+    print(f"Running nearest neighbor with all {num_features} features, using \"leaving-one-out\" evaluation, I get an accuracy of {initial_all_features_accuracy:.2f}%\n")
+    # asking to choose the search method
+    choice = ''
+    while choice not in ['1', '2']:
+        print("\nType the number of the algorithm you want to run.")
+        print("1) Forward Selection")
+        print("2) Backward Elimination")
+        choice = input("Enter choice (1 or 2): ")
+        if choice not in ['1', '2']:
+            print("Invalid choice. Please enter 1 or 2.")
+
+    start_time = time.time()
+    # running the algorithm based on chosed method
+    if choice == '1':
+        algorithm_name = "Forward Selection"
+        best_features, best_accuracy, plot_data_results = forward_selection(my_dataset, initial_all_features_accuracy)
+    elif choice == '2':
+
+        algorithm_name = "Backward Elimination"
+        best_features, best_accuracy, plot_data_results = backward_elimination(my_dataset)
+    else:
+        print("Invalid choice. Please enter 1 or 2.")
+
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    #finally showing the time taken to run the algorithm
+    print(f"\nAlgorithm finished in {elapsed_time:.2f} seconds.")
 
 if __name__ == "__main__":
     main()

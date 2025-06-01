@@ -1,0 +1,185 @@
+--- Machine Information ---
+CPU:
+  Model Name: Intel(R) Xeon(R) CPU @ 2.20GHz
+  Architecture: x86_64
+  CPU(s) (Logical): 2
+  On-line CPU(s) list: 0,1
+  Core(s) per socket: 1
+  Socket(s): 1
+  Thread(s) per core: 2
+  L3 Cache: 55 MiB (1 instance)
+Memory:
+  Total: 12.7 GB
+OS:
+  System: Linux
+  Release: 6.1.123+
+  Version: #1 SMP PREEMPT_DYNAMIC Sun Mar 30 16:01:29 UTC 2025
+---------------------------
+
+Welcome to Akshat Shah's Feature Selection Algorithm.
+
+Type in the name of the file to test : CS205_small_Data__11.txt
+
+Successfully loaded 500 instances from 'CS205_small_Data__11.txt'.
+
+This dataset has 12 features (not including the class attribute), with 500 instances.
+
+The majority class baseline (0 features) accuracy is 83.60%
+
+Running nearest neighbor with all 12 features, using "leaving-one-out" evaluation, I get an accuracy of 72.60%
+
+
+Type the number of the algorithm you want to run.
+1) Forward Selection
+2) Backward Elimination
+Enter choice (1 or 2): 1
+Running nearest neighbor with no features (default rate), using "leaving-one-out" evaluation, I get an accuracy of 83.60%
+Beginning search.
+
+On level 1 of the search tree, considering adding feature to set().
+          Using feature(s) {1} accuracy is 84.60%
+          Using feature(s) {2} accuracy is 72.60%
+          Using feature(s) {3} accuracy is 69.40%
+          Using feature(s) {4} accuracy is 69.40%
+          Using feature(s) {5} accuracy is 74.40%
+          Using feature(s) {6} accuracy is 74.60%
+          Using feature(s) {7} accuracy is 75.20%
+          Using feature(s) {8} accuracy is 71.40%
+          Using feature(s) {9} accuracy is 72.80%
+          Using feature(s) {10} accuracy is 72.60%
+          Using feature(s) {11} accuracy is 70.20%
+          Using feature(s) {12} accuracy is 72.20%
+Feature set {1} was best, accuracy 84.60%
+
+On level 2 of the search tree, considering adding feature to {1}.
+          Using feature(s) {1, 2} accuracy is 82.40%
+          Using feature(s) {1, 3} accuracy is 84.40%
+          Using feature(s) {1, 4} accuracy is 85.60%
+          Using feature(s) {1, 5} accuracy is 85.60%
+          Using feature(s) {1, 6} accuracy is 96.60%
+          Using feature(s) {1, 7} accuracy is 85.20%
+          Using feature(s) {1, 8} accuracy is 81.80%
+          Using feature(s) {1, 9} accuracy is 83.00%
+          Using feature(s) {1, 10} accuracy is 83.40%
+          Using feature(s) {1, 11} accuracy is 84.40%
+          Using feature(s) {1, 12} accuracy is 85.80%
+Feature set {1, 6} was best, accuracy 96.60%
+
+On level 3 of the search tree, considering adding feature to {1, 6}.
+          Using feature(s) {1, 2, 6} accuracy is 89.80%
+          Using feature(s) {1, 3, 6} accuracy is 93.00%
+          Using feature(s) {1, 4, 6} accuracy is 89.80%
+          Using feature(s) {1, 5, 6} accuracy is 92.40%
+          Using feature(s) {1, 6, 7} accuracy is 91.40%
+          Using feature(s) {1, 6, 8} accuracy is 90.60%
+          Using feature(s) {1, 6, 9} accuracy is 92.00%
+          Using feature(s) {1, 6, 10} accuracy is 92.20%
+          Using feature(s) {1, 6, 11} accuracy is 91.40%
+          Using feature(s) {1, 6, 12} accuracy is 91.80%
+Feature set {1, 3, 6} was best, accuracy 93.00%
+
+(Warning, Accuracy has decreased! Continuing search in case of local maxima)
+(Current best feature subset: {1, 6}, accuracy: 96.60%)
+
+On level 4 of the search tree, considering adding feature to {1, 3, 6}.
+          Using feature(s) {1, 2, 3, 6} accuracy is 87.40%
+          Using feature(s) {1, 3, 4, 6} accuracy is 88.20%
+          Using feature(s) {1, 3, 5, 6} accuracy is 88.40%
+          Using feature(s) {1, 3, 6, 7} accuracy is 90.20%
+          Using feature(s) {1, 3, 6, 8} accuracy is 90.00%
+          Using feature(s) {1, 3, 6, 9} accuracy is 88.40%
+          Using feature(s) {1, 3, 6, 10} accuracy is 91.40%
+          Using feature(s) {1, 3, 6, 11} accuracy is 87.60%
+          Using feature(s) {1, 3, 6, 12} accuracy is 89.00%
+Feature set {1, 10, 3, 6} was best, accuracy 91.40%
+
+(Warning, Accuracy has decreased! Continuing search in case of local maxima)
+(Current best feature subset: {1, 6}, accuracy: 96.60%)
+
+On level 5 of the search tree, considering adding feature to {1, 10, 3, 6}.
+          Using feature(s) {1, 2, 3, 6, 10} accuracy is 86.00%
+          Using feature(s) {1, 3, 4, 6, 10} accuracy is 84.60%
+          Using feature(s) {1, 3, 5, 6, 10} accuracy is 88.20%
+          Using feature(s) {1, 3, 6, 7, 10} accuracy is 86.80%
+          Using feature(s) {1, 3, 6, 8, 10} accuracy is 88.00%
+          Using feature(s) {1, 3, 6, 9, 10} accuracy is 85.40%
+          Using feature(s) {1, 3, 6, 10, 11} accuracy is 85.20%
+          Using feature(s) {1, 3, 6, 10, 12} accuracy is 85.80%
+Feature set {1, 3, 5, 6, 10} was best, accuracy 88.20%
+
+(Warning, Accuracy has decreased! Continuing search in case of local maxima)
+(Current best feature subset: {1, 6}, accuracy: 96.60%)
+
+On level 6 of the search tree, considering adding feature to {1, 3, 5, 6, 10}.
+          Using feature(s) {1, 2, 3, 5, 6, 10} accuracy is 84.80%
+          Using feature(s) {1, 3, 4, 5, 6, 10} accuracy is 81.80%
+          Using feature(s) {1, 3, 5, 6, 7, 10} accuracy is 85.00%
+          Using feature(s) {1, 3, 5, 6, 8, 10} accuracy is 84.60%
+          Using feature(s) {1, 3, 5, 6, 9, 10} accuracy is 86.40%
+          Using feature(s) {1, 3, 5, 6, 10, 11} accuracy is 84.40%
+          Using feature(s) {1, 3, 5, 6, 10, 12} accuracy is 84.20%
+Feature set {1, 3, 5, 6, 9, 10} was best, accuracy 86.40%
+
+(Warning, Accuracy has decreased! Continuing search in case of local maxima)
+(Current best feature subset: {1, 6}, accuracy: 96.60%)
+
+On level 7 of the search tree, considering adding feature to {1, 3, 5, 6, 9, 10}.
+          Using feature(s) {1, 2, 3, 5, 6, 9, 10} accuracy is 83.80%
+          Using feature(s) {1, 3, 4, 5, 6, 9, 10} accuracy is 82.60%
+          Using feature(s) {1, 3, 5, 6, 7, 9, 10} accuracy is 82.40%
+          Using feature(s) {1, 3, 5, 6, 8, 9, 10} accuracy is 82.80%
+          Using feature(s) {1, 3, 5, 6, 9, 10, 11} accuracy is 80.80%
+          Using feature(s) {1, 3, 5, 6, 9, 10, 12} accuracy is 79.60%
+Feature set {1, 2, 3, 5, 6, 9, 10} was best, accuracy 83.80%
+
+(Warning, Accuracy has decreased! Continuing search in case of local maxima)
+(Current best feature subset: {1, 6}, accuracy: 96.60%)
+
+On level 8 of the search tree, considering adding feature to {1, 2, 3, 5, 6, 9, 10}.
+          Using feature(s) {1, 2, 3, 4, 5, 6, 9, 10} accuracy is 82.60%
+          Using feature(s) {1, 2, 3, 5, 6, 7, 9, 10} accuracy is 79.60%
+          Using feature(s) {1, 2, 3, 5, 6, 8, 9, 10} accuracy is 80.80%
+          Using feature(s) {1, 2, 3, 5, 6, 9, 10, 11} accuracy is 79.40%
+          Using feature(s) {1, 2, 3, 5, 6, 9, 10, 12} accuracy is 79.40%
+Feature set {1, 2, 3, 4, 5, 6, 9, 10} was best, accuracy 82.60%
+
+(Warning, Accuracy has decreased! Continuing search in case of local maxima)
+(Current best feature subset: {1, 6}, accuracy: 96.60%)
+
+On level 9 of the search tree, considering adding feature to {1, 2, 3, 4, 5, 6, 9, 10}.
+          Using feature(s) {1, 2, 3, 4, 5, 6, 7, 9, 10} accuracy is 79.60%
+          Using feature(s) {1, 2, 3, 4, 5, 6, 8, 9, 10} accuracy is 78.80%
+          Using feature(s) {1, 2, 3, 4, 5, 6, 9, 10, 11} accuracy is 78.60%
+          Using feature(s) {1, 2, 3, 4, 5, 6, 9, 10, 12} accuracy is 78.20%
+Feature set {1, 2, 3, 4, 5, 6, 7, 9, 10} was best, accuracy 79.60%
+
+(Warning, Accuracy has decreased! Continuing search in case of local maxima)
+(Current best feature subset: {1, 6}, accuracy: 96.60%)
+
+On level 10 of the search tree, considering adding feature to {1, 2, 3, 4, 5, 6, 7, 9, 10}.
+          Using feature(s) {1, 2, 3, 4, 5, 6, 7, 8, 9, 10} accuracy is 76.80%
+          Using feature(s) {1, 2, 3, 4, 5, 6, 7, 9, 10, 11} accuracy is 76.40%
+          Using feature(s) {1, 2, 3, 4, 5, 6, 7, 9, 10, 12} accuracy is 78.40%
+Feature set {1, 2, 3, 4, 5, 6, 7, 9, 10, 12} was best, accuracy 78.40%
+
+(Warning, Accuracy has decreased! Continuing search in case of local maxima)
+(Current best feature subset: {1, 6}, accuracy: 96.60%)
+
+On level 11 of the search tree, considering adding feature to {1, 2, 3, 4, 5, 6, 7, 9, 10, 12}.
+          Using feature(s) {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12} accuracy is 74.60%
+          Using feature(s) {1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12} accuracy is 74.80%
+Feature set {1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12} was best, accuracy 74.80%
+
+(Warning, Accuracy has decreased! Continuing search in case of local maxima)
+(Current best feature subset: {1, 6}, accuracy: 96.60%)
+
+On level 12 of the search tree, considering adding feature to {1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12}.
+          Using feature(s) {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12} accuracy is 72.60%
+Feature set {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12} was best, accuracy 72.60%
+
+(Warning, Accuracy has decreased! Continuing search in case of local maxima)
+(Current best feature subset: {1, 6}, accuracy: 96.60%)
+
+Finished search!! The best feature subset is {1, 6}, which has an accuracy of 96.60%
+
+Algorithm finished in 33.80 seconds.
