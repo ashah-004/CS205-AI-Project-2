@@ -17,36 +17,23 @@ def load_dataset(file_path):
     dataset = []
     try:
         with open(file_path, 'r') as f:
-            # Iterate over each line in the opened file
             for line in f:
-                # Remove leading/trailing whitespace (like newline characters)
-                # and then split the string by any whitespace into a list of strings.
+
                 parts = line.strip().split()
 
-                # If the line was empty or only contained whitespace, 'parts' will be empty.
-                # Skip such lines.
                 if not parts:
                     continue
 
-                # Convert all string parts to floating-point numbers.
-                # This handles integers, decimals, and scientific notation (e.g., 1.23e+010).
                 try:
                     values = [float(p) for p in parts]
                 except ValueError:
-                    # If any part cannot be converted to float, it's a malformed line.
                     print(f"Warning: Skipping malformed line '{line.strip()}' in '{file_path}'. Non-numeric data found.")
-                    continue # Skip to the next line
+                    continue 
 
-                # --- Crucial step based on the provided input format ---
-                # The first value in the line is the class label.
-                # Convert it to an integer as class labels are typically discrete.
                 class_label = int(values[0])
 
-                # All remaining values (from the second element to the end) are features.
-                # Use list slicing to get all elements from index 1 onwards.
                 features = values[1:]
 
-                # Create a new Instance object and add it to our dataset list.
                 dataset.append(Instance(features, class_label))
 
         print(f"Successfully loaded {len(dataset)} instances from '{file_path}'.\n")
